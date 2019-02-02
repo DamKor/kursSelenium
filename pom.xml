@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>groupId</groupId>
+    <artifactId>tmpProject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <properties>
+        <aspectj.version>1.9.2</aspectj.version>
+    </properties>
+
+    <dependencies>
+        <!--Poniżej biblioteki konieczne do poprawnego działania Allure framework-->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <!--Biblioteka Allure-->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+        <!--zaleznosci do testów -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.14.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit4 -->
+        <!-- <dependency>
+             <groupId>io.qameta.allure</groupId>
+             <artifactId>allure-junit4</artifactId>
+             <version>2.9.0</version>
+             <scope>test</scope>
+         </dependency>
+         <dependency>
+             <groupId>io.qameta.allure</groupId>
+             <artifactId>allure-java-commons</artifactId>
+             <version>2.8.1</version>
+             <scope>compile</scope>
+         </dependency>-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>-->
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!--Plugin Allure do generowania raportów-->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <reportVersion>2.6.0</reportVersion>
+                    <propertiesFilePath>${basedir}/src/main/resources/allure.properties</propertiesFilePath>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <!--&lt;!&ndash;Nowy parametr określający gdzie maven-surefire-plugin ma zapisywać wyniki z testów&ndash;&gt;-->
+                    <systemPropertyVariables>
+                        <allure.results.directory>${basedir}/target/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src\test\resources\all_tests_suite.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <!--&lt;!&ndash;Konfiguracja Allura ze ścieżką do biblioteki aspectjweaver&ndash;&gt;-->
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                </configuration>
+                <!--&lt;!&ndash;Dodanie dodatkowych zależności do maven-surefire-plugin w postaci biblioteki aspectjweaver&ndash;&gt;
+                &lt;!&ndash;Sekcja ta określa zależności dla danego pluginu&ndash;&gt;-->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

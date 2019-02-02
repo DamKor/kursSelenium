@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="All Pet Store Tests" parallel="tests" thread-count="1">
+
+        <test name="Negative Login Tests">
+            <parameter name="browser" value="CHROME"/>
+            <classes>
+                <class name="tests.FailedLoginTests"/>
+            </classes>
+        </test>
+
+        <test name="Positive Login Tests">
+            <parameter name="browser" value="CHROME"/>
+            <classes>
+                <class name="tests.PositiveLoginTests"/>
+            </classes>
+        </test>
+</suite>
